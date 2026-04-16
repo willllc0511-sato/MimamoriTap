@@ -146,7 +146,7 @@ final class NotificationManager: ObservableObject {
 
         let content = UNMutableNotificationContent()
         content.title = "無料お試し期間のお知らせ"
-        content.body = "あと3日で無料お試し期間が終了します。引き続きご利用いただくと月額190円が自動で課金されます。"
+        content.body = "あと3日で無料お試し期間が終了します。引き続きご利用いただくと月額200円が自動で課金されます。"
         content.sound = .default
 
         // 12日後（= トライアル15日のうち残り3日）にトリガー

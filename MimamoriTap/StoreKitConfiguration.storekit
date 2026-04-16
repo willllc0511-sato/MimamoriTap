@@ -28,7 +28,7 @@
         },
         "prices" : [
           {
-            "price" : "190",
+            "price" : "200",
             "locale" : "ja",
             "currencyCode" : "JPY"
           }

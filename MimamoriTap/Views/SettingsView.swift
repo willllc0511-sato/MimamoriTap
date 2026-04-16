@@ -53,38 +53,61 @@ struct SettingsView: View {
     var body: some View {
         NavigationStack {
             List {
-                // プレミアムセクション
+                // プランセクション
                 Section {
-                    Button {
-                        showPremium = true
-                    } label: {
-                        HStack(spacing: 14) {
-                            ZStack {
-                                Circle()
-                                    .fill(Color("AccentGreen").opacity(0.15))
-                                    .frame(width: 44, height: 44)
-                                Image(systemName: "crown.fill")
-                                    .font(.system(size: 20))
+                    VStack(spacing: 12) {
+                        if storeManager.isPremium {
+                            // サブスク購入済み
+                            HStack(spacing: 12) {
+                                Image(systemName: "checkmark.seal.fill")
+                                    .font(.system(size: 28))
                                     .foregroundStyle(Color("AccentGreen"))
-                            }
-                            VStack(alignment: .leading, spacing: 2) {
-                                Text("ご利用プラン")
-                                    .font(.system(size: 20, weight: .semibold))
+                                Text("月額200円で利用中")
+                                    .font(.system(size: 22, weight: .bold))
                                     .foregroundStyle(.primary)
-                                Text(planStatusText)
-                                    .font(.system(size: 15))
-                                    .foregroundStyle(.secondary)
                             }
-                            Spacer()
-                            Image(systemName: "chevron.right")
-                                .font(.system(size: 16, weight: .semibold))
+                        } else if storeManager.trialRemainingDays > 0 {
+                            // 無料お試し中
+                            Text("無料お試し中")
+                                .font(.system(size: 16, weight: .medium))
                                 .foregroundStyle(.secondary)
+                            Text("残り \(storeManager.trialRemainingDays) 日")
+                                .font(.system(size: 36, weight: .bold))
+                                .foregroundStyle(Color("AccentGreen"))
+                            Button {
+                                showPremium = true
+                            } label: {
+                                Text("すべての機能を使う")
+                                    .font(.system(size: 18, weight: .semibold))
+                                    .foregroundStyle(.white)
+                                    .frame(maxWidth: .infinity)
+                                    .frame(height: 48)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 12)
+                                            .fill(Color("AccentGreen"))
+                                    )
+                            }
+                        } else {
+                            // お試し期間終了・未購入
+                            Text("お試し期間が終了しました")
+                                .font(.system(size: 18, weight: .bold))
+                                .foregroundStyle(.red)
+                            Button {
+                                showPremium = true
+                            } label: {
+                                Text("すべての機能を使う")
+                                    .font(.system(size: 18, weight: .semibold))
+                                    .foregroundStyle(.white)
+                                    .frame(maxWidth: .infinity)
+                                    .frame(height: 48)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 12)
+                                            .fill(Color("AccentGreen"))
+                                    )
+                            }
                         }
                     }
-                    .padding(.vertical, 6)
-                } header: {
-                    Text("ご利用プラン")
-                        .font(.system(size: 16))
+                    .padding(.vertical, 8)
                 }
 
                 // お知らせ設定セクション

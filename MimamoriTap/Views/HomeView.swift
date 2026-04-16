@@ -359,7 +359,11 @@ struct HomeView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .background(
                     RoundedRectangle(cornerRadius: 20)
-                        .fill(buttonColor(for: mood).opacity(isActive ? 1.0 : 0.12))
+                        .fill(buttonColor(for: mood).opacity(isActive ? 1.0 : 0.15))
+                )
+                .overlay(
+                    RoundedRectangle(cornerRadius: 20)
+                        .stroke(buttonColor(for: mood).opacity(isActive ? 0 : 0.3), lineWidth: 1)
                 )
                 .foregroundStyle(isActive ? .white : .primary)
             }
@@ -401,7 +405,11 @@ struct HomeView: View {
                                     Capsule()
                                         .fill(tappedPhrase == phrase
                                               ? Color("AccentGreen")
-                                              : Color("AccentGreen").opacity(0.12))
+                                              : Color("AccentGreen").opacity(0.15))
+                                )
+                                .overlay(
+                                    Capsule()
+                                        .stroke(Color("AccentGreen").opacity(tappedPhrase == phrase ? 0 : 0.3), lineWidth: 1)
                                 )
                                 .foregroundStyle(tappedPhrase == phrase ? .white : .primary)
                         }

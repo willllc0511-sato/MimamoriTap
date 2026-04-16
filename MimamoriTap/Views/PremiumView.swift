@@ -155,26 +155,15 @@ struct PremiumView: View {
 
     private var pricingSection: some View {
         VStack(spacing: 6) {
-            // 通常価格（取り消し線付き）
-            Text("月額290円")
-                .font(.system(size: 18))
-                .foregroundStyle(.gray)
-                .strikethrough(true, color: .gray)
-
-            // キャンペーン価格
             if let product = storeManager.product {
                 Text(product.displayPrice + " / 月")
                     .font(.system(size: 28, weight: .bold))
                     .foregroundStyle(.primary)
             } else {
-                Text("月額190円")
+                Text("月額200円")
                     .font(.system(size: 28, weight: .bold))
                     .foregroundStyle(.primary)
             }
-
-            Text("先着1,000名様 キャンペーン価格")
-                .font(.system(size: 16, weight: .medium))
-                .foregroundStyle(Color("AccentOrange"))
         }
     }
 
@@ -194,11 +183,6 @@ struct PremiumView: View {
                         .tint(.white)
                         .frame(maxWidth: .infinity)
                         .frame(height: 60)
-                } else if storeManager.product == nil {
-                    Text("商品情報を読み込み中...")
-                        .font(.system(size: 20, weight: .semibold))
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 60)
                 } else {
                     Text("15日間無料で試す")
                         .font(.system(size: 22, weight: .bold))
@@ -209,16 +193,16 @@ struct PremiumView: View {
             .foregroundStyle(.white)
             .background(
                 RoundedRectangle(cornerRadius: 16)
-                    .fill(storeManager.product == nil ? Color.gray : Color("AccentGreen"))
+                    .fill(Color("AccentGreen"))
             )
             .clipShape(RoundedRectangle(cornerRadius: 16))
             .disabled(storeManager.isPurchasing)
 
-            Text("無料期間終了後、月額190円が課金されます")
+            Text("無料期間終了後、月額200円が課金されます")
                 .font(.system(size: 14))
                 .foregroundStyle(.secondary)
 
-            if let errorMessage = storeManager.errorMessage {
+            if let errorMessage = storeManager.errorMessage, storeManager.product != nil {
                 Text(errorMessage)
                     .font(.system(size: 16))
                     .foregroundStyle(.red)

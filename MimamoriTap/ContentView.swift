@@ -48,6 +48,7 @@ struct ContentView: View {
                     Label("設定", systemImage: "gearshape.fill")
                 }
         }
+        .modifier(TabBarOnlyModifier())
         .tint(Color("AccentGreen"))
         .onAppear {
             // タブバーの背景色を淡いグリーンに設定
@@ -98,6 +99,17 @@ struct ContentView: View {
         } else if remaining <= 3 {
             // 残り3日以内：リマインド表示（閉じられる）
             activeLaunchScreen = .premium(dismissable: true)
+        }
+    }
+}
+
+/// iPadでタブバーをサイドバーではなく下部タブバーに強制する
+struct TabBarOnlyModifier: ViewModifier {
+    func body(content: Content) -> some View {
+        if #available(iOS 18.0, *) {
+            content.tabViewStyle(.tabBarOnly)
+        } else {
+            content
         }
     }
 }
