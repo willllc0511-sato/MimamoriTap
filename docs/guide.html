@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>取扱説明書 - みまもりタップ</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", sans-serif;
+            max-width: 640px;
+            margin: 0 auto;
+            padding: 24px 16px;
+            line-height: 2;
+            color: #333;
+            background: #f5f9f6;
+            font-size: 18px;
+        }
+        h1 {
+            font-size: 1.6em;
+            text-align: center;
+            color: #4a9e6e;
+            margin-bottom: 0.3em;
+        }
+        .subtitle {
+            text-align: center;
+            color: #888;
+            font-size: 0.9em;
+            margin-bottom: 2em;
+        }
+        h2 {
+            font-size: 1.3em;
+            color: #4a9e6e;
+            margin-top: 2.5em;
+            padding-bottom: 6px;
+            border-bottom: 2px solid #c8e6d0;
+        }
+        h3 {
+            font-size: 1.1em;
+            margin-top: 1.5em;
+        }
+        p, li {
+            font-size: 1em;
+        }
+        ul {
+            padding-left: 1.2em;
+        }
+        li {
+            margin-bottom: 0.5em;
+        }
+        .card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 20px 20px;
+            margin: 16px 0;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+        }
+        .flow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            font-size: 1.1em;
+            padding: 16px 0;
+        }
+        .flow-item {
+            text-align: center;
+        }
+        .flow-icon {
+            font-size: 2.5em;
+            display: block;
+        }
+        .flow-arrow {
+            font-size: 1.8em;
+            color: #4a9e6e;
+        }
+        .mood-row {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 16px 0;
+        }
+        .mood-item {
+            text-align: center;
+            background: #fff;
+            border-radius: 16px;
+            padding: 16px 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+            min-width: 80px;
+        }
+        .mood-item .emoji {
+            font-size: 2.5em;
+            display: block;
+        }
+        .mood-item .label {
+            font-size: 0.95em;
+            font-weight: bold;
+            margin-top: 4px;
+        }
+        .alert-card {
+            background: #fff5f5;
+            border-left: 4px solid #e74c3c;
+            border-radius: 12px;
+            padding: 16px 18px;
+            margin: 12px 0;
+        }
+        .alert-card .title {
+            font-weight: bold;
+            color: #e74c3c;
+        }
+        .notify-card {
+            background: #f0faf3;
+            border-left: 4px solid #4a9e6e;
+            border-radius: 12px;
+            padding: 16px 18px;
+            margin: 12px 0;
+        }
+        .notify-card .title {
+            font-weight: bold;
+            color: #4a9e6e;
+        }
+        .step {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            margin: 14px 0;
+        }
+        .step-num {
+            background: #4a9e6e;
+            color: #fff;
+            font-weight: bold;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 1em;
+        }
+        .step-text {
+            flex: 1;
+        }
+        .faq-q {
+            font-weight: bold;
+            margin-top: 1.5em;
+            font-size: 1.05em;
+        }
+        .faq-a {
+            margin-left: 1em;
+            margin-bottom: 1em;
+            color: #555;
+        }
+        .contact-box {
+            background: #fff;
+            border-radius: 16px;
+            padding: 20px;
+            margin-top: 1.5em;
+            text-align: center;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+        }
+        a {
+            color: #4a9e6e;
+        }
+        .footer {
+            text-align: center;
+            color: #aaa;
+            font-size: 0.8em;
+            margin-top: 3em;
+        }
+    </style>
+</head>
+<body>
+
+<h1>みまもりタップ<br>取扱説明書</h1>
+<p class="subtitle">安否確認・見守り・SOS</p>
+
+<!-- ==================== -->
+<h2>1. このアプリは何ができる？</h2>
+
+<div class="card">
+    <p style="text-align:center; font-size:1.1em; font-weight:bold;">毎日1タップするだけで、家族に安否が届きます</p>
+    <div class="flow">
+        <div class="flow-item">
+            <span class="flow-icon">🧓</span>
+            あなた
+        </div>
+        <span class="flow-arrow">➡️</span>
+        <div class="flow-item">
+            <span class="flow-icon">📱</span>
+            毎日タップ
+        </div>
+        <span class="flow-arrow">➡️</span>
+        <div class="flow-item">
+            <span class="flow-icon">💬</span>
+            家族のLINEに<br>お知らせ
+        </div>
+    </div>
+    <p>タップを忘れた日は、家族のLINEに「確認してください」と自動でお知らせが届きます。</p>
+</div>
+
+<!-- ==================== -->
+<h2>2. 毎日の使い方</h2>
+
+<div class="card">
+    <p>ホーム画面で、今日の調子を<strong>タップするだけ</strong>です。</p>
+
+    <div class="mood-row">
+        <div class="mood-item">
+            <span class="emoji">😊</span>
+            <span class="label">元気</span>
+        </div>
+        <div class="mood-item">
+            <span class="emoji">😐</span>
+            <span class="label">ふつう</span>
+        </div>
+        <div class="mood-item">
+            <span class="emoji">😔</span>
+            <span class="label">調子悪い</span>
+        </div>
+    </div>
+
+    <p>タップすると、きれいな<strong>桜の花びら</strong>が画面に舞います 🌸<br>
+    （設定でオフにもできます）</p>
+
+    <p>タップした記録は「履歴」タブでいつでも確認できます。</p>
+</div>
+
+<!-- ==================== -->
+<h2>3. 家族にお知らせが届くとき</h2>
+
+<div class="notify-card">
+    <p class="title">📱 24時間タップがないとき</p>
+    <p>家族のLINEに「24時間反応がありません。お時間のある時にご様子を確認してみてください。」とお知らせが届きます。</p>
+</div>
+
+<div class="notify-card">
+    <p class="title">😔 「調子悪い」が3日続いたとき</p>
+    <p>家族のLINEに「3日連続で調子悪いと記録されています。お声がけをおすすめします。」とお知らせが届きます。</p>
+</div>
+
+<div class="alert-card">
+    <p class="title">🆘 SOSボタンが押されたとき</p>
+    <p>家族のLINEに<strong>すぐに</strong>緊急のお知らせが届きます。</p>
+</div>
+
+<!-- ==================== -->
+<h2>4. 緊急時のSOSボタン</h2>
+
+<div class="card">
+    <p>ホーム画面の上にある赤い<strong>SOSボタン</strong>は、緊急時に使います。</p>
+
+    <div class="alert-card">
+        <p class="title">🔴 ワンタップ → 家族に通知</p>
+        <p>SOSボタンをタップすると、確認画面が出ます。「はい」を押すと家族のLINEにお知らせが届きます。</p>
+    </div>
+
+    <div class="alert-card">
+        <p class="title">🔴 5秒長押し → 119番に発信</p>
+        <p>SOSボタンを<strong>5秒間押し続ける</strong>と、119番（救急）に電話がかかります。同時に家族のLINEにも緊急のお知らせが届きます。</p>
+    </div>
+
+    <p>⚠️ <strong>間違って押しても大丈夫です。</strong><br>
+    タップの場合は確認画面で「キャンセル」を押せば何も起きません。<br>
+    長押しの場合は5秒以内に指を離せば119番には発信されません。</p>
+</div>
+
+<!-- ==================== -->
+<h2>5. 家族の登録方法</h2>
+
+<div class="card">
+    <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-text">設定画面から「家族にLINEで通知」をタップ</div>
+    </div>
+    <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-text">「連携コードを発行」ボタンを押す<br>→ 8桁のコードが表示されます</div>
+    </div>
+    <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-text">家族に、LINE公式アカウント<strong>「みまもりタップ」</strong>を友だち追加してもらう</div>
+    </div>
+    <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-text">家族がLINEで<strong>8桁のコード</strong>を送信 → 連携完了！</div>
+    </div>
+    <p style="margin-top:12px;">連携が完了すると、自動でお知らせが届くようになります。</p>
+</div>
+
+<!-- ==================== -->
+<h2>6. よくある質問</h2>
+
+<p class="faq-q">Q. 通知が届きません</p>
+<p class="faq-a">iPhoneの「設定」→「みまもりタップ」→「通知」で、通知が許可されているか確認してください。</p>
+
+<p class="faq-q">Q. SOSボタンを間違って押しました</p>
+<p class="faq-a">確認画面で「キャンセル」を押せば大丈夫です。長押しの場合は5秒以内に指を離してください。</p>
+
+<p class="faq-q">Q. 解約したいです</p>
+<p class="faq-a">iPhoneの「設定」→ お名前（Apple ID）→「サブスクリプション」→「みまもりタップ」→「サブスクリプションをキャンセル」で解約できます。</p>
+
+<p class="faq-q">Q. データを削除したいです</p>
+<p class="faq-a">アプリの「設定」→「アカウントを削除」からすべてのデータを削除できます。</p>
+
+<p class="faq-q">Q. iPadでも使えますか？</p>
+<p class="faq-a">はい。iOS 17.0以上のiPhoneとiPadに対応しています。</p>
+
+<!-- ==================== -->
+<h2>7. お問い合わせ</h2>
+
+<div class="contact-box">
+    <p>ご不明な点は、お気軽にご連絡ください。</p>
+    <p style="font-size:1.1em;">
+        📧 <a href="mailto:routine6683@icloud.com">routine6683@icloud.com</a>
+    </p>
+    <p style="font-size:0.9em; color:#888;">合同会社Will</p>
+</div>
+
+<p class="footer">&copy; 2026 合同会社Will</p>
+
+</body>
+</html>

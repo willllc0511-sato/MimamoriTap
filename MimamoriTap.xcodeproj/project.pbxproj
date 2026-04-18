@@ -7,8 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1733448282CEC149AE7ACC0E /* AccountDeletionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538041298CE595C571F283D5 /* AccountDeletionView.swift */; };
+		209A43B48C452A84BD1FE6AB /* LineLinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C89647ECB1AD0E183FF5121F /* LineLinkView.swift */; };
 		4419400781E91FDB11AB0739 /* StoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832A4E18929D78B72AE8B02A /* StoreManager.swift */; };
+		50AD4488A2E2A691C8C7AB85 /* FamilyNotificationStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FB44B198D2AD87F59C94200 /* FamilyNotificationStatusView.swift */; };
 		817D44619A642CE4CBCCDA46 /* PremiumView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300446F5AD2C84FD704C4A8A /* PremiumView.swift */; };
+		896B4D29A7985AE0D4A66792 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = F229431790F9E3263F19B372 /* APIClient.swift */; };
 		A10000010000000000000001 /* MimamoriTapApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000010000000000000001 /* MimamoriTapApp.swift */; };
 		A10000010000000000000002 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000010000000000000002 /* ContentView.swift */; };
 		A10000010000000000000003 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000010000000000000003 /* HomeView.swift */; };
@@ -18,11 +22,24 @@
 		A10000010000000000000007 /* TapRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000010000000000000007 /* TapRecord.swift */; };
 		A10000010000000000000008 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A20000010000000000000008 /* Assets.xcassets */; };
 		A10000010000000000000009 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000010000000000000011 /* NotificationManager.swift */; };
+		B10000010000000000000001 /* ScreenshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000010000000000000001 /* ScreenshotTests.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		B70000010000000000000001 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A80000010000000000000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A50000010000000000000001;
+			remoteInfo = MimamoriTap;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		215A43D8A7E30EE2BC965C75 /* StoreKitConfiguration.storekit */ = {isa = PBXFileReference; lastKnownFileType = None; name = StoreKitConfiguration.storekit; path = MimamoriTap/StoreKitConfiguration.storekit; sourceTree = SOURCE_ROOT; };
 		300446F5AD2C84FD704C4A8A /* PremiumView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PremiumView.swift; path = MimamoriTap/Views/PremiumView.swift; sourceTree = SOURCE_ROOT; };
+		538041298CE595C571F283D5 /* AccountDeletionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AccountDeletionView.swift; path = MimamoriTap/Views/AccountDeletionView.swift; sourceTree = SOURCE_ROOT; };
+		5FB44B198D2AD87F59C94200 /* FamilyNotificationStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FamilyNotificationStatusView.swift; path = MimamoriTap/Views/FamilyNotificationStatusView.swift; sourceTree = SOURCE_ROOT; };
 		832A4E18929D78B72AE8B02A /* StoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StoreManager.swift; path = MimamoriTap/StoreKit/StoreManager.swift; sourceTree = SOURCE_ROOT; };
 		A20000010000000000000001 /* MimamoriTapApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MimamoriTapApp.swift; sourceTree = "<group>"; };
 		A20000010000000000000002 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -35,10 +52,21 @@
 		A20000010000000000000009 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A20000010000000000000010 /* MimamoriTap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MimamoriTap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A20000010000000000000011 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
+		B20000010000000000000001 /* ScreenshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenshotTests.swift; sourceTree = "<group>"; };
+		B20000010000000000000002 /* MimamoriTapUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MimamoriTapUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C89647ECB1AD0E183FF5121F /* LineLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LineLinkView.swift; path = MimamoriTap/Views/LineLinkView.swift; sourceTree = SOURCE_ROOT; };
+		F229431790F9E3263F19B372 /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = APIClient.swift; path = MimamoriTap/Services/APIClient.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		A30000010000000000000001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B30000010000000000000001 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -52,7 +80,12 @@
 			isa = PBXGroup;
 			children = (
 				A40000010000000000000002 /* MimamoriTap */,
+				B40000010000000000000001 /* MimamoriTapUITests */,
 				A40000010000000000000006 /* Products */,
+				F229431790F9E3263F19B372 /* APIClient.swift */,
+				C89647ECB1AD0E183FF5121F /* LineLinkView.swift */,
+				5FB44B198D2AD87F59C94200 /* FamilyNotificationStatusView.swift */,
+				538041298CE595C571F283D5 /* AccountDeletionView.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -96,8 +129,17 @@
 			isa = PBXGroup;
 			children = (
 				A20000010000000000000010 /* MimamoriTap.app */,
+				B20000010000000000000002 /* MimamoriTapUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		B40000010000000000000001 /* MimamoriTapUITests */ = {
+			isa = PBXGroup;
+			children = (
+				B20000010000000000000001 /* ScreenshotTests.swift */,
+			);
+			path = MimamoriTapUITests;
 			sourceTree = "<group>";
 		};
 		CDA24A769EF1D202BD39B759 /* StoreKit */ = {
@@ -128,6 +170,24 @@
 			productReference = A20000010000000000000010 /* MimamoriTap.app */;
 			productType = "com.apple.product-type.application";
 		};
+		B50000010000000000000001 /* MimamoriTapUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BA0000010000000000000001 /* Build configuration list for PBXNativeTarget "MimamoriTapUITests" */;
+			buildPhases = (
+				B60000010000000000000001 /* Sources */,
+				B30000010000000000000001 /* Frameworks */,
+				B60000010000000000000002 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B80000010000000000000001 /* PBXTargetDependency */,
+			);
+			name = MimamoriTapUITests;
+			productName = MimamoriTapUITests;
+			productReference = B20000010000000000000002 /* MimamoriTapUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -140,6 +200,10 @@
 				TargetAttributes = {
 					A50000010000000000000001 = {
 						CreatedOnToolsVersion = 15.0;
+					};
+					B50000010000000000000001 = {
+						CreatedOnToolsVersion = 15.0;
+						TestTargetID = A50000010000000000000001;
 					};
 				};
 			};
@@ -157,6 +221,7 @@
 			projectRoot = "";
 			targets = (
 				A50000010000000000000001 /* MimamoriTap */,
+				B50000010000000000000001 /* MimamoriTapUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -167,6 +232,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				A10000010000000000000008 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B60000010000000000000002 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -187,10 +259,30 @@
 				A10000010000000000000009 /* NotificationManager.swift in Sources */,
 				4419400781E91FDB11AB0739 /* StoreManager.swift in Sources */,
 				817D44619A642CE4CBCCDA46 /* PremiumView.swift in Sources */,
+				896B4D29A7985AE0D4A66792 /* APIClient.swift in Sources */,
+				209A43B48C452A84BD1FE6AB /* LineLinkView.swift in Sources */,
+				50AD4488A2E2A691C8C7AB85 /* FamilyNotificationStatusView.swift in Sources */,
+				1733448282CEC149AE7ACC0E /* AccountDeletionView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B60000010000000000000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B10000010000000000000001 /* ScreenshotTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		B80000010000000000000001 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A50000010000000000000001 /* MimamoriTap */;
+			targetProxy = B70000010000000000000001 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		A90000010000000000000001 /* Debug */ = {
@@ -315,7 +407,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 2YDCV4Y5W9;
 				ENABLE_PREVIEWS = YES;
@@ -326,7 +418,7 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -349,7 +441,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 2YDCV4Y5W9;
 				ENABLE_PREVIEWS = YES;
@@ -360,7 +452,7 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -374,6 +466,54 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		B90000010000000000000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2YDCV4Y5W9;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.willllc.mimamoritap.uitests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = MimamoriTap;
+			};
+			name = Debug;
+		};
+		B90000010000000000000002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2YDCV4Y5W9;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.willllc.mimamoritap.uitests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = MimamoriTap;
 			};
 			name = Release;
 		};
@@ -394,6 +534,15 @@
 			buildConfigurations = (
 				A90000010000000000000003 /* Debug */,
 				A90000010000000000000004 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BA0000010000000000000001 /* Build configuration list for PBXNativeTarget "MimamoriTapUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B90000010000000000000001 /* Debug */,
+				B90000010000000000000002 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

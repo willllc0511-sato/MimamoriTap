@@ -6,33 +6,32 @@
     "currentVersion" : 1,
     "subscriptions" : [
       {
-        "displayName" : "プレミアム（キャンペーン）",
+        "displayName" : "みまもりタップ ご利用プラン",
         "identifier" : "com.willllc.mimamoritap.premium.campaign",
         "productID" : "com.willllc.mimamoritap.premium.campaign",
         "recurringSubscriptionPeriod" : "P1M",
-        "referenceName" : "Premium Campaign Monthly",
+        "referenceName" : "MimamoriTap Monthly Plan",
         "localizations" : [
           {
-            "description" : "体調トレンドグラフ、複数連絡先など全機能が使えます",
-            "displayName" : "みまもりタップ プレミアム",
+            "description" : "家族へのLINE通知、体調トレンドグラフなど全機能が使えます",
+            "displayName" : "みまもりタップ ご利用プラン",
             "locale" : "ja"
           }
         ],
         "subscriptionPeriod" : "P1M",
-        "introductoryOffer" : {
-          "internalID" : "F1E2D3C4-5678-90AB-CDEF-1234567890AB",
-          "paymentMode" : "free",
-          "subscriptionPeriod" : "P2W1D",
-          "displayPrice" : "0",
-          "numberOfPeriods" : 1
-        },
         "prices" : [
           {
-            "price" : "200",
+            "price" : "500",
             "locale" : "ja",
             "currencyCode" : "JPY"
           }
         ],
+        "introductoryOffer" : {
+          "displayPrice" : "0",
+          "period" : "P1M",
+          "numberOfPeriods" : 1,
+          "paymentMode" : "freeTrial"
+        },
         "type" : "RecurringSubscription"
       }
     ],
@@ -41,12 +40,12 @@
         "id" : "A1B2C3D4-5678-90AB-CDEF-1234567890AB",
         "localizations" : [
           {
-            "description" : "みまもりタップ プレミアムプラン",
-            "displayName" : "みまもりタップ プレミアム",
+            "description" : "みまもりタップ ご利用プラン",
+            "displayName" : "みまもりタップ ご利用プラン",
             "locale" : "ja"
           }
         ],
-        "name" : "MimamoriTap Premium",
+        "name" : "MimamoriTap Plan",
         "subscriptions" : [
           "com.willllc.mimamoritap.premium.campaign"
         ]

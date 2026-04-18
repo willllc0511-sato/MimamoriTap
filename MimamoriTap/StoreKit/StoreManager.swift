@@ -9,8 +9,10 @@ final class StoreManager: ObservableObject {
     /// プレミアムプランのProduct ID
     static let premiumProductID = "com.willllc.mimamoritap.premium.campaign"
 
-    /// プレミアム状態（購入済み or トライアル中）
+    /// サブスクリプション登録済み（トライアル含む）
     @Published var isPremium = false
+    /// 無料トライアル中かどうか（StoreKit 2の自動判定）
+    @Published var isInTrial = false
     /// 商品情報（App Store Connectから取得）
     @Published var product: Product?
     /// 購入処理中フラグ
@@ -19,50 +21,12 @@ final class StoreManager: ObservableObject {
     @Published var errorMessage: String?
     /// サブスクリプションの有効期限
     @Published var expirationDate: Date?
-    /// 無料トライアル中かどうか
-    @Published var isInTrial = false
 
     /// トランザクション監視タスク
     private var updateListenerTask: Task<Void, Never>?
 
-    /// 無料お試し期間（日数）
-    static let trialDays = 15
-    /// 初回起動日のUserDefaultsキー
-    private static let firstLaunchDateKey = "firstLaunchDate"
-
-    /// 初回起動日を記録（未記録の場合のみ）
-    func recordFirstLaunchIfNeeded() {
-        if UserDefaults.standard.object(forKey: Self.firstLaunchDateKey) == nil {
-            UserDefaults.standard.set(Date(), forKey: Self.firstLaunchDateKey)
-        }
-    }
-
-    /// 初回起動日
-    var firstLaunchDate: Date? {
-        UserDefaults.standard.object(forKey: Self.firstLaunchDateKey) as? Date
-    }
-
-    /// 無料お試し期間の残り日数（0なら期限切れ）
-    var trialRemainingDays: Int {
-        guard let firstLaunch = firstLaunchDate else { return Self.trialDays }
-        let elapsed = Calendar.current.dateComponents([.day], from: firstLaunch, to: Date()).day ?? 0
-        return max(0, Self.trialDays - elapsed)
-    }
-
-    /// アプリ側の無料期間内かどうか（StoreKit購入不要で使える）
-    var isInFreeTrial: Bool {
-        trialRemainingDays > 0
-    }
-
-    /// アプリが使える状態か（サブスク登録済み or 無料期間内）
-    var canUseApp: Bool {
-        isPremium || isInFreeTrial
-    }
-
     private init() {
-        // トランザクション更新の監視を開始
         updateListenerTask = listenForTransactions()
-        // 起動時に商品情報と課金状態を取得
         Task {
             await loadProduct()
             await updateSubscriptionStatus()
@@ -111,13 +75,7 @@ final class StoreManager: ObservableObject {
                 await transaction.finish()
                 await updateSubscriptionStatus()
 
-                // サブスク購入完了後に通知許可をリクエストし、リマインド通知をスケジュール
                 NotificationManager.shared.requestAuthorizationAndSchedule()
-
-                // トライアル開始時に終了3日前のリマインド通知をスケジュール
-                if isInTrial {
-                    NotificationManager.shared.scheduleTrialExpiryReminder()
-                }
 
             case .userCancelled:
                 break
@@ -166,11 +124,9 @@ final class StoreManager: ObservableObject {
             guard let transaction = try? checkVerified(result) else { continue }
 
             if transaction.productID == Self.premiumProductID {
-                // 有効なサブスクリプションが存在
                 foundActive = true
                 expirationDate = transaction.expirationDate
 
-                // トライアル判定
                 if let offerType = transaction.offerType, offerType == .introductory {
                     isInTrial = true
                 } else {
@@ -183,8 +139,6 @@ final class StoreManager: ObservableObject {
         if !foundActive {
             expirationDate = nil
             isInTrial = false
-            // サブスク無効時はトライアル通知をキャンセル
-            NotificationManager.shared.cancelTrialExpiryReminder()
         }
     }
 

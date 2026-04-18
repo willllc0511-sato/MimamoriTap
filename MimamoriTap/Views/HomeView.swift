@@ -128,6 +128,13 @@ struct HomeView: View {
             .timestamp
     }
 
+    /// 全レコードの中で最も新しいタップ時刻
+    private var lastTapEver: Date? {
+        allRecords
+            .max(by: { $0.timestamp < $1.timestamp })?
+            .timestamp
+    }
+
     /// 連続確認日数（ストリーク）
     private var streakDays: Int {
         let calendar = Calendar.current
@@ -159,6 +166,8 @@ struct HomeView: View {
                         Spacer().frame(height: 16)
                     }
                     .padding(.horizontal, 20)
+                    .frame(maxWidth: 600)
+                    .frame(maxWidth: .infinity)
                 }
 
                 // 花びらオーバーレイ（最前面・タッチ透過）
@@ -167,7 +176,14 @@ struct HomeView: View {
                     .allowsHitTesting(false)
             }
             .navigationTitle("みまもりタップ")
-            .onAppear { startCountdownTimer() }
+            .onAppear {
+                startCountdownTimer()
+                // UIテスト用: SOS長押しリングを静的表示
+                if ProcessInfo.processInfo.arguments.contains("-UITEST_SOS_RING") {
+                    isSOSPressing = true
+                    sosProgress = 0.6
+                }
+            }
             .onDisappear { countdownTimer?.invalidate() }
             .alert("緊急時のみ使用してください", isPresented: $showSOSWarning) {
                 Button("わかりました", role: .cancel) {
@@ -176,17 +192,17 @@ struct HomeView: View {
             } message: {
                 Text("SOSボタンは緊急時に家族や救急に連絡するためのものです。間違ってタップしても、長押ししなければ119番には発信されません。")
             }
-            .alert("緊急連絡先に電話しますか？", isPresented: $showSOSConfirmDialog) {
-                Button("はい（電話する）", role: .destructive) { sendEmergencyAction(call119: false) }
+            .alert(isContactRegistered ? "緊急連絡先に電話しますか？" : "SOSを送信しますか？", isPresented: $showSOSConfirmDialog) {
+                Button(isContactRegistered ? "はい（電話する）" : "はい", role: .destructive) { sendEmergencyAction(call119: false) }
                 Button("キャンセル", role: .cancel) {}
             } message: {
-                Text("\(contactName)さんに電話をかけ、メールでもお知らせします。")
+                Text(isContactRegistered ? "\(contactName)さんに電話をかけ、家族のLINEにもお知らせします。" : "家族のLINEにお知らせします。")
             }
             .alert("119番に電話しますか？", isPresented: $showEmergencyCallDialog) {
                 Button("はい（119番に発信）", role: .destructive) { sendEmergencyAction(call119: true) }
                 Button("キャンセル", role: .cancel) {}
             } message: {
-                Text("救急車を呼びます。\(contactName)さんにもメールでお知らせします。")
+                Text("救急車を呼びます。家族のLINEにもお知らせします。")
             }
             .alert("連絡先が登録されていません", isPresented: $showNoContactAlert) {
                 Button("OK", role: .cancel) {}
@@ -244,6 +260,8 @@ struct HomeView: View {
                         .frame(width: 48, height: 48)
                         .background(Circle().fill(Color.red))
                 }
+                .accessibilityIdentifier("sosButton")
+                .accessibilityAddTraits(.isButton)
                 .onTapGesture {
                     handleSOSTap()
                 }
@@ -368,6 +386,7 @@ struct HomeView: View {
                 .foregroundStyle(isActive ? .white : .primary)
             }
             .buttonStyle(.plain)
+            .accessibilityIdentifier("moodButton_\(mood.rawValue)")
             .scaleEffect(isActive ? 0.92 : 1.0)
             .animation(.spring(response: 0.3, dampingFraction: 0.5), value: isActive)
         }
@@ -485,6 +504,9 @@ struct HomeView: View {
         modelContext.insert(record)
         NotificationManager.shared.cancelTodayReminderIfTapped(modelContext: modelContext)
 
+        // Supabaseにも送信（失敗しても無視）
+        Task { await APIClient.shared.sendTap(mood: mood.rawValue, memo: nil) }
+
         // 毎日の確認メール送信（設定ONかつ連絡先登録済みの場合）
         sendDailyNotifyMailIfNeeded(mood: mood, memo: nil)
 
@@ -579,6 +601,9 @@ struct HomeView: View {
         modelContext.insert(record)
         NotificationManager.shared.cancelTodayReminderIfTapped(modelContext: modelContext)
 
+        // Supabaseにも送信（失敗しても無視）
+        Task { await APIClient.shared.sendTap(mood: mood.rawValue, memo: phrase) }
+
         // 毎日の確認メール送信（設定ONかつ連絡先登録済みの場合）
         sendDailyNotifyMailIfNeeded(mood: mood, memo: phrase)
 
@@ -645,66 +670,71 @@ struct HomeView: View {
             showSOSWarning = true
             return
         }
-        // 連絡先未登録チェック
-        guard isContactRegistered else {
-            showNoContactAlert = true
-            return
-        }
-        // 確認ダイアログを表示
+        // 連絡先未登録でもSOSは使える（確認ダイアログを表示）
         showSOSConfirmDialog = true
     }
 
-    /// SOS処理: 電話発信 + メール送信
+    /// SOS処理: 電話発信 + LINE通知 + メール送信
     /// call119: trueなら119番、falseなら緊急連絡先に電話
     private func sendEmergencyAction(call119: Bool) {
-        guard isContactRegistered else {
-            showNoContactAlert = true
-            return
-        }
-
-        // メール内容を準備
+        // 電話発信（人命最優先: 何よりも先に実行）
         if call119 {
-            sosMailSubject = "【緊急】\(displayUserName)さんがSOSボタンを押しました（119番通報済み）"
-            sosMailBody = """
-            【緊急連絡】
-
-            \(displayUserName)さんがみまもりタップのSOSボタンを押し、119番に通報しました。
-            至急確認してください。
-
-            送信日時：\(Date().formatted(date: .long, time: .shortened))
-
-            ※このメールはみまもりタップから自動送信されています。
-            """
-        } else {
-            sosMailSubject = "【緊急】\(displayUserName)さんがSOSボタンを押しました"
-            sosMailBody = """
-            【緊急連絡】
-
-            \(displayUserName)さんがみまもりタップのSOSボタンを押しました。
-            至急確認してください。
-
-            送信日時：\(Date().formatted(date: .long, time: .shortened))
-
-            ※このメールはみまもりタップから自動送信されています。
-            """
+            // 119番は連絡先未登録でも必ず発信
+            if let url = URL(string: "tel://119") {
+                UIApplication.shared.open(url)
+            }
+        } else if isContactRegistered {
+            let phoneNumber = contactPhone.replacingOccurrences(of: "-", with: "")
+            if !phoneNumber.isEmpty, let url = URL(string: "tel://\(phoneNumber)") {
+                UIApplication.shared.open(url)
+            }
         }
 
-        // 電話発信（ワンタップ: 緊急連絡先、長押し: 119番）
-        let phoneNumber = call119 ? "119" : contactPhone.replacingOccurrences(of: "-", with: "")
-        if !phoneNumber.isEmpty, let url = URL(string: "tel://\(phoneNumber)") {
-            UIApplication.shared.open(url)
-        }
+        // 家族のLINEへ即時通知（非同期・結果待たない・失敗してもUIに表示しない）
+        let sosType = call119 ? "longpress" : "tap"
+        let name = displayUserName
+        Task { await APIClient.shared.sendSOSNotification(sosType: sosType, userName: name) }
 
-        // 電話発信後にメール送信画面を表示
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            if MFMailComposeViewController.canSendMail() {
-                showSOSMailComposer = true
+        // メール送信（連絡先登録済みの場合のみ）
+        if isContactRegistered {
+            if call119 {
+                sosMailSubject = "【緊急】\(displayUserName)さんがSOSボタンを押しました（119番通報済み）"
+                sosMailBody = """
+                【緊急連絡】
+
+                \(displayUserName)さんがみまもりタップのSOSボタンを押し、119番に通報しました。
+                至急確認してください。
+
+                送信日時：\(Date().formatted(date: .long, time: .shortened))
+
+                ※このメールはみまもりタップから自動送信されています。
+                """
             } else {
-                withAnimation { sosMessage = "緊急連絡先に電話しました" }
-                DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
-                    withAnimation { sosMessage = "" }
+                sosMailSubject = "【緊急】\(displayUserName)さんがSOSボタンを押しました"
+                sosMailBody = """
+                【緊急連絡】
+
+                \(displayUserName)さんがみまもりタップのSOSボタンを押しました。
+                至急確認してください。
+
+                送信日時：\(Date().formatted(date: .long, time: .shortened))
+
+                ※このメールはみまもりタップから自動送信されています。
+                """
+            }
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                if MFMailComposeViewController.canSendMail() {
+                    showSOSMailComposer = true
                 }
             }
+        }
+
+        // ステータスメッセージ表示
+        let message = call119 ? "119番に発信しました" : (isContactRegistered ? "緊急連絡先に電話しました" : "SOSを送信しました")
+        withAnimation { sosMessage = message }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+            withAnimation { sosMessage = "" }
         }
     }
 
@@ -742,12 +772,16 @@ struct HomeView: View {
 
     private func updateRemainingTime() {
         let now = Date()
-        let calendar = Calendar.current
-        guard let endOfDay = calendar.date(bySettingHour: 23, minute: 59, second: 59, of: now) else {
+        guard let lastTap = lastTapEver else {
             remainingTime = "--"
             return
         }
-        let diff = calendar.dateComponents([.hour, .minute], from: now, to: endOfDay)
+        let deadline = lastTap.addingTimeInterval(24 * 60 * 60) // 最後のタップから24時間後
+        guard deadline > now else {
+            remainingTime = "0分"
+            return
+        }
+        let diff = Calendar.current.dateComponents([.hour, .minute], from: now, to: deadline)
         let hours = diff.hour ?? 0
         let minutes = diff.minute ?? 0
         remainingTime = hours > 0 ? "\(hours)時間\(minutes)分" : "\(minutes)分"

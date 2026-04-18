@@ -132,44 +132,6 @@ final class NotificationManager: ObservableObject {
         center.add(request)
     }
 
-    // MARK: - トライアル終了リマインド通知
-
-    /// トライアル終了リマインドの通知ID
-    private let trialReminderIdentifier = "trial_expiry_reminder"
-
-    /// トライアル終了3日前のリマインド通知をスケジュール（購入から12日後）
-    func scheduleTrialExpiryReminder() {
-        let center = UNUserNotificationCenter.current()
-
-        // 既存のトライアル通知を削除（重複防止）
-        center.removePendingNotificationRequests(withIdentifiers: [trialReminderIdentifier])
-
-        let content = UNMutableNotificationContent()
-        content.title = "無料お試し期間のお知らせ"
-        content.body = "あと3日で無料お試し期間が終了します。引き続きご利用いただくと月額200円が自動で課金されます。"
-        content.sound = .default
-
-        // 12日後（= トライアル15日のうち残り3日）にトリガー
-        let trigger = UNTimeIntervalNotificationTrigger(
-            timeInterval: 12 * 24 * 60 * 60,
-            repeats: false
-        )
-
-        let request = UNNotificationRequest(
-            identifier: trialReminderIdentifier,
-            content: content,
-            trigger: trigger
-        )
-
-        center.add(request)
-    }
-
-    /// トライアル終了リマインド通知をキャンセル（解約時など）
-    func cancelTrialExpiryReminder() {
-        UNUserNotificationCenter.current()
-            .removePendingNotificationRequests(withIdentifiers: [trialReminderIdentifier])
-    }
-
     /// タップ済みの場合に当日の通知を取り消す
     func cancelTodayReminderIfTapped(modelContext: ModelContext) {
         // 今日のタップ記録があるか確認

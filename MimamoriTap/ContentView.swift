@@ -16,9 +16,8 @@ enum LaunchScreen: Identifiable {
 
 /// メインのタブビュー - 4つのタブで構成
 /// 起動フロー:
-///   初回 → ガイド → ホーム（全機能使える、15日間無料）
-///   12日目〜14日目 → サブスク画面（閉じられる）
-///   15日経過後（未登録） → サブスク画面（閉じられない）
+///   初回 → ガイド → サブスク画面（あとでスキップ可） → ホーム
+///   未登録で起動 → サブスク画面（あとでスキップ可） → ホーム
 struct ContentView: View {
     @EnvironmentObject private var storeManager: StoreManager
     /// ガイド表示済みフラグ（UserDefaultsに永続化）
@@ -58,7 +57,6 @@ struct ContentView: View {
             UITabBar.appearance().standardAppearance = appearance
             UITabBar.appearance().scrollEdgeAppearance = appearance
 
-            storeManager.recordFirstLaunchIfNeeded()
             decideInitialScreen()
         }
         // サブスク登録完了を監視して自動でサブスク画面を閉じる
@@ -76,8 +74,8 @@ struct ContentView: View {
                     hasSeenGuide = true
                     activeLaunchScreen = nil
                 }
-            case .premium(let dismissable):
-                PremiumView(dismissable: dismissable)
+            case .premium:
+                PremiumView(dismissable: false)
                     .environmentObject(storeManager)
             }
         }
@@ -85,21 +83,17 @@ struct ContentView: View {
 
     /// 起動時にどの画面を表示するか判定
     private func decideInitialScreen() {
+        // UIテスト時はプレミアム画面をスキップしてホーム直行
+        if ProcessInfo.processInfo.arguments.contains("-UITEST_SKIP_PREMIUM") {
+            return
+        }
         if !hasSeenGuide {
             activeLaunchScreen = .onboarding
             return
         }
-        // サブスク登録済みなら何も表示しない
         if storeManager.isPremium { return }
-
-        let remaining = storeManager.trialRemainingDays
-        if remaining <= 0 {
-            // 無料期間終了：強制表示（閉じられない）
-            activeLaunchScreen = .premium(dismissable: false)
-        } else if remaining <= 3 {
-            // 残り3日以内：リマインド表示（閉じられる）
-            activeLaunchScreen = .premium(dismissable: true)
-        }
+        // 未登録：サブスク画面を表示（あとでスキップ可能）
+        activeLaunchScreen = .premium(dismissable: true)
     }
 }
 

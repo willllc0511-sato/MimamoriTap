@@ -1,35 +1,39 @@
 import SwiftUI
 
 /// サブスクリプション登録画面（高齢者向けに大きく見やすいUI）
-/// dismissable: trueなら閉じるボタンあり（リマインド表示）、falseなら閉じられない（期限切れ）
 struct PremiumView: View {
     @EnvironmentObject private var storeManager: StoreManager
     @Environment(\.dismiss) private var dismiss
 
-    /// 閉じるボタンを表示するか（リマインド時はtrue、期限切れ時はfalse）
-    var dismissable: Bool = false
+    /// trueの場合「閉じる」「あとで」を表示（設定画面からのsheet表示用）
+    var dismissable: Bool = true
 
-    /// プレミアム機能の説明リスト
+    /// 有料機能の説明リスト
     private let features: [(icon: String, title: String, description: String)] = [
+        ("bell.badge.fill", "家族へのLINE通知", "タップがない時や体調不良時に、家族のLINEに自動でお知らせします"),
         ("chart.line.uptrend.xyaxis", "体調トレンドグラフ", "日々の体調を見やすいグラフで確認できます"),
         ("person.2.fill", "複数の連絡先", "お知らせを届ける家族を複数登録できます"),
-        ("bell.badge.fill", "優先サポート", "お困りの際に優先的にサポートを受けられます"),
+        ("headphones.circle.fill", "優先サポート", "お困りの際に優先的にサポートを受けられます"),
     ]
 
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 24) {
-                    trialBanner
                     headerSection
                     featuresSection
                     pricingSection
                     purchaseButton
                     restoreButton
+                    if dismissable {
+                        skipButton
+                    }
                     legalLinks
                 }
                 .padding(.horizontal, 24)
                 .padding(.vertical, 16)
+                .frame(maxWidth: 600)
+                .frame(maxWidth: .infinity)
             }
             .background(Color(.systemGroupedBackground))
             .navigationTitle("ご利用について")
@@ -43,63 +47,13 @@ struct PremiumView: View {
                 }
             }
         }
-        // リマインド時はスワイプで閉じられる、期限切れ時は閉じられない
-        .interactiveDismissDisabled(!dismissable)
-    }
-
-    // MARK: - トライアル期間バナー
-
-    private var trialBanner: some View {
-        Group {
-            let remaining = storeManager.trialRemainingDays
-            if remaining <= 0 {
-                // 期限切れ
-                VStack(spacing: 6) {
-                    Image(systemName: "exclamationmark.triangle.fill")
-                        .font(.system(size: 28))
-                        .foregroundStyle(.red)
-                    Text("無料お試し期間が終了しました")
-                        .font(.system(size: 20, weight: .bold))
-                        .foregroundStyle(.red)
-                    Text("引き続きご利用いただくには、\nプランへの登録をお願いします。")
-                        .font(.system(size: 16))
-                        .foregroundStyle(.secondary)
-                        .multilineTextAlignment(.center)
-                }
-                .padding(16)
-                .frame(maxWidth: .infinity)
-                .background(
-                    RoundedRectangle(cornerRadius: 16)
-                        .fill(Color.red.opacity(0.08))
-                )
-            } else if remaining <= 3 {
-                // 残り3日以内リマインド
-                VStack(spacing: 6) {
-                    Image(systemName: "clock.badge.exclamationmark")
-                        .font(.system(size: 28))
-                        .foregroundStyle(Color("AccentOrange"))
-                    Text("あと\(remaining)日で無料お試し期間が終了します")
-                        .font(.system(size: 20, weight: .bold))
-                        .foregroundStyle(Color("AccentOrange"))
-                    Text("期間終了後は月額プランへの登録が必要です")
-                        .font(.system(size: 16))
-                        .foregroundStyle(.secondary)
-                }
-                .padding(16)
-                .frame(maxWidth: .infinity)
-                .background(
-                    RoundedRectangle(cornerRadius: 16)
-                        .fill(Color("AccentOrange").opacity(0.08))
-                )
-            }
-        }
     }
 
     // MARK: - ヘッダー
 
     private var headerSection: some View {
         VStack(spacing: 12) {
-            Image(systemName: "crown.fill")
+            Image(systemName: "heart.circle.fill")
                 .font(.system(size: 48))
                 .foregroundStyle(Color("AccentGreen"))
 
@@ -155,14 +109,18 @@ struct PremiumView: View {
 
     private var pricingSection: some View {
         VStack(spacing: 6) {
+            Text("30日間無料")
+                .font(.system(size: 28, weight: .bold))
+                .foregroundStyle(Color("AccentGreen"))
+
             if let product = storeManager.product {
-                Text(product.displayPrice + " / 月")
-                    .font(.system(size: 28, weight: .bold))
-                    .foregroundStyle(.primary)
+                Text("その後 " + product.displayPrice + " / 月")
+                    .font(.system(size: 20))
+                    .foregroundStyle(.secondary)
             } else {
-                Text("月額200円")
-                    .font(.system(size: 28, weight: .bold))
-                    .foregroundStyle(.primary)
+                Text("その後 月額500円")
+                    .font(.system(size: 20))
+                    .foregroundStyle(.secondary)
             }
         }
     }
@@ -170,7 +128,7 @@ struct PremiumView: View {
     // MARK: - 購入ボタン
 
     private var purchaseButton: some View {
-        VStack(spacing: 8) {
+        VStack(spacing: 10) {
             Button {
                 if storeManager.product == nil {
                     Task { await storeManager.loadProduct() }
@@ -184,7 +142,7 @@ struct PremiumView: View {
                         .frame(maxWidth: .infinity)
                         .frame(height: 60)
                 } else {
-                    Text("15日間無料で試す")
+                    Text("始める")
                         .font(.system(size: 22, weight: .bold))
                         .frame(maxWidth: .infinity)
                         .frame(height: 60)
@@ -198,9 +156,14 @@ struct PremiumView: View {
             .clipShape(RoundedRectangle(cornerRadius: 16))
             .disabled(storeManager.isPurchasing)
 
-            Text("無料期間終了後、月額200円が課金されます")
-                .font(.system(size: 14))
-                .foregroundStyle(.secondary)
+            VStack(spacing: 2) {
+                Text("30日間無料でご利用いただけます。")
+                Text("無料期間終了後、月額500円で自動更新されます。")
+                Text("いつでも解約できます。")
+            }
+            .font(.system(size: 14))
+            .foregroundStyle(.secondary)
+            .multilineTextAlignment(.center)
 
             if let errorMessage = storeManager.errorMessage, storeManager.product != nil {
                 Text(errorMessage)
@@ -228,6 +191,18 @@ struct PremiumView: View {
                 .foregroundStyle(Color("AccentGreen"))
         }
         .disabled(storeManager.isPurchasing)
+    }
+
+    // MARK: - あとでボタン
+
+    private var skipButton: some View {
+        Button {
+            dismiss()
+        } label: {
+            Text("あとで")
+                .font(.system(size: 18))
+                .foregroundStyle(.secondary)
+        }
     }
 
     // MARK: - 利用規約・プライバシーポリシー

@@ -15,17 +15,17 @@ struct SettingsView: View {
     @State private var showGuide = false
     /// プレミアム画面表示フラグ
     @State private var showPremium = false
+    /// LINE連携画面表示フラグ
+    @State private var showLineLink = false
+    /// アカウント削除画面表示フラグ
+    @State private var showAccountDeletion = false
 
     /// ご利用プランのステータス表示テキスト
     private var planStatusText: String {
         if storeManager.isPremium {
-            return storeManager.isInTrial ? "無料トライアル中" : "ご利用中"
+            return "ご利用中"
         }
-        let remaining = storeManager.trialRemainingDays
-        if remaining > 0 {
-            return "無料お試し中（残り\(remaining)日）"
-        }
-        return "お試し期間終了"
+        return "未登録"
     }
 
     /// DatePicker用のバインディング（変更時に通知を再スケジュール）
@@ -57,45 +57,19 @@ struct SettingsView: View {
                 Section {
                     VStack(spacing: 12) {
                         if storeManager.isPremium {
-                            // サブスク購入済み
                             HStack(spacing: 12) {
                                 Image(systemName: "checkmark.seal.fill")
                                     .font(.system(size: 28))
                                     .foregroundStyle(Color("AccentGreen"))
-                                Text("月額200円で利用中")
+                                Text("ご利用プラン登録済み")
                                     .font(.system(size: 22, weight: .bold))
                                     .foregroundStyle(.primary)
                             }
-                        } else if storeManager.trialRemainingDays > 0 {
-                            // 無料お試し中
-                            Text("無料お試し中")
-                                .font(.system(size: 16, weight: .medium))
-                                .foregroundStyle(.secondary)
-                            Text("残り \(storeManager.trialRemainingDays) 日")
-                                .font(.system(size: 36, weight: .bold))
-                                .foregroundStyle(Color("AccentGreen"))
-                            Button {
-                                showPremium = true
-                            } label: {
-                                Text("すべての機能を使う")
-                                    .font(.system(size: 18, weight: .semibold))
-                                    .foregroundStyle(.white)
-                                    .frame(maxWidth: .infinity)
-                                    .frame(height: 48)
-                                    .background(
-                                        RoundedRectangle(cornerRadius: 12)
-                                            .fill(Color("AccentGreen"))
-                                    )
-                            }
                         } else {
-                            // お試し期間終了・未購入
-                            Text("お試し期間が終了しました")
-                                .font(.system(size: 18, weight: .bold))
-                                .foregroundStyle(.red)
                             Button {
                                 showPremium = true
                             } label: {
-                                Text("すべての機能を使う")
+                                Text("ご利用プランに登録")
                                     .font(.system(size: 18, weight: .semibold))
                                     .foregroundStyle(.white)
                                     .frame(maxWidth: .infinity)
@@ -108,6 +82,57 @@ struct SettingsView: View {
                         }
                     }
                     .padding(.vertical, 8)
+                }
+
+                // LINE連携セクション
+                Section {
+                    Button {
+                        if storeManager.isPremium {
+                            showLineLink = true
+                        } else {
+                            showPremium = true
+                        }
+                    } label: {
+                        HStack {
+                            Label {
+                                Text("家族にLINEで通知")
+                                    .font(.system(size: 20, weight: .semibold))
+                            } icon: {
+                                Image(systemName: "bell.badge.fill")
+                                    .foregroundStyle(Color("AccentGreen"))
+                                    .font(.system(size: 20))
+                            }
+                            Spacer()
+                            if !storeManager.isPremium {
+                                Text("有料")
+                                    .font(.system(size: 14, weight: .medium))
+                                    .foregroundStyle(.white)
+                                    .padding(.horizontal, 10)
+                                    .padding(.vertical, 4)
+                                    .background(Capsule().fill(Color("AccentGreen")))
+                            }
+                        }
+                    }
+                    .padding(.vertical, 8)
+
+                    if storeManager.isPremium {
+                        NavigationLink {
+                            FamilyNotificationStatusView()
+                        } label: {
+                            Label {
+                                Text("通知ステータス")
+                                    .font(.system(size: 20))
+                            } icon: {
+                                Image(systemName: "chart.bar.fill")
+                                    .foregroundStyle(Color("AccentGreen"))
+                                    .font(.system(size: 20))
+                            }
+                        }
+                        .padding(.vertical, 4)
+                    }
+                } header: {
+                    Text("家族通知")
+                        .font(.system(size: 16))
                 }
 
                 // お知らせ設定セクション
@@ -227,7 +252,7 @@ struct SettingsView: View {
                     ShareLink(
                         item: URL(string: "https://apps.apple.com/app/mimamoritap")!,
                         subject: Text("みまもりタップ"),
-                        message: Text("みまもりタップ - 毎日1タップで安否確認。離れて暮らす家族の安心に。15日間無料でお試しできます")
+                        message: Text("【みまもりタップ】のご紹介\n\n家族の安否を、毎日1タップで共有できるアプリです。\n離れて暮らす家族にも安心を届けましょう。")
                     ) {
                         Label {
                             Text("家族にすすめる")
@@ -279,8 +304,40 @@ struct SettingsView: View {
                         }
                     }
                     .padding(.vertical, 4)
+
+                    Link(destination: URL(string: "https://willllc0511-sato.github.io/MimamoriTap/tokushoho.html")!) {
+                        Label {
+                            Text("特定商取引法に基づく表示")
+                                .font(.system(size: 20))
+                        } icon: {
+                            Image(systemName: "building.columns.fill")
+                                .foregroundStyle(Color("AccentGreen"))
+                                .font(.system(size: 20))
+                        }
+                    }
+                    .padding(.vertical, 4)
                 } header: {
                     Text("法的情報")
+                        .font(.system(size: 16))
+                }
+
+                // アカウント管理セクション
+                Section {
+                    Button {
+                        showAccountDeletion = true
+                    } label: {
+                        Label {
+                            Text("アカウントを削除")
+                                .font(.system(size: 20))
+                        } icon: {
+                            Image(systemName: "trash.fill")
+                                .foregroundStyle(.red)
+                                .font(.system(size: 20))
+                        }
+                    }
+                    .padding(.vertical, 4)
+                } header: {
+                    Text("アカウント")
                         .font(.system(size: 16))
                 }
             }
@@ -296,6 +353,12 @@ struct SettingsView: View {
             .sheet(isPresented: $showPremium) {
                 PremiumView()
                     .environmentObject(storeManager)
+            }
+            .sheet(isPresented: $showLineLink) {
+                LineLinkView()
+            }
+            .sheet(isPresented: $showAccountDeletion) {
+                AccountDeletionView()
             }
         }
     }
@@ -384,6 +447,13 @@ struct UsageGuideView: View {
                             )
                     }
                     .padding(.horizontal, 32)
+
+                    Link(destination: URL(string: "https://willllc0511-sato.github.io/MimamoriTap/guide.html")!) {
+                        Text("もっと詳しく知りたい方はこちら")
+                            .font(.system(size: 16))
+                            .foregroundStyle(Color("AccentGreen"))
+                    }
+                    .padding(.top, 12)
 
                     Spacer().frame(height: 32)
                 }
