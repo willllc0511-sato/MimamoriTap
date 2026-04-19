@@ -6,7 +6,7 @@ import StoreKit
 final class StoreManager: ObservableObject {
     static let shared = StoreManager()
 
-    /// プレミアムプランのProduct ID
+    /// ご利用プランのProduct ID
     static let premiumProductID = "com.willllc.mimamoritap.premium.campaign"
 
     /// サブスクリプション登録済み（トライアル含む）

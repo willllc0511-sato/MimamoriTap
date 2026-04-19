@@ -2,7 +2,7 @@
 
 ## 概要
 高齢者の安否確認iOSアプリ。毎日体調ボタンをタップすることで家族に安否を伝える。
-- 開発者: 合同会社Will
+- 開発者: Satoshi Taki（個人事業主）
 - Bundle ID: `com.willllc.mimamoritap`
 - 対象: iOS（Swift / SwiftUI / SwiftData）
 - Xcodeプロジェクト（SPM等の外部依存なし）

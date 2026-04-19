@@ -8,7 +8,7 @@ struct PremiumView: View {
     /// trueの場合「閉じる」「あとで」を表示（設定画面からのsheet表示用）
     var dismissable: Bool = true
 
-    /// 有料機能の説明リスト
+    /// 機能の説明リスト
     private let features: [(icon: String, title: String, description: String)] = [
         ("bell.badge.fill", "家族へのLINE通知", "タップがない時や体調不良時に、家族のLINEに自動でお知らせします"),
         ("chart.line.uptrend.xyaxis", "体調トレンドグラフ", "日々の体調を見やすいグラフで確認できます"),

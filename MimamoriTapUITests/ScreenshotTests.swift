@@ -8,7 +8,7 @@ final class ScreenshotTests: XCTestCase {
 
     private func launchApp(skipPremium: Bool = true) -> XCUIApplication {
         let app = XCUIApplication()
-        app.launchArguments += ["-hasSeenGuide", "YES", "-sosVisible", "YES", "-hasSeenSOSWarning", "YES"]
+        app.launchArguments += ["-hasSeenGuide", "YES", "-sosVisible", "YES", "-hasSeenSOSWarning", "YES", "-INSERT_SAMPLE_DATA"]
         if skipPremium {
             app.launchArguments.append("-UITEST_SKIP_PREMIUM")
         }
@@ -82,7 +82,7 @@ final class ScreenshotTests: XCTestCase {
 
     func testIPhoneScreenshots() throws {
         try XCTSkipIf(isIPad, "iPhone only")
-        saveDir = "/Users/sa-taki/Desktop/AppStoreScreenshots/iphone_67"
+        saveDir = "/Users/sa-taki/Desktop/AppStoreScreenshots/iphone_69"
         captureAllScreens(prefix: "iphone")
     }
 

@@ -20,6 +20,7 @@ enum LaunchScreen: Identifiable {
 ///   未登録で起動 → サブスク画面（あとでスキップ可） → ホーム
 struct ContentView: View {
     @EnvironmentObject private var storeManager: StoreManager
+    @Environment(\.modelContext) private var modelContext
     /// ガイド表示済みフラグ（UserDefaultsに永続化）
     @AppStorage("hasSeenGuide") private var hasSeenGuide = false
     /// 現在表示中のフルスクリーン画面（nilならホーム表示）
@@ -58,6 +59,9 @@ struct ContentView: View {
             UITabBar.appearance().scrollEdgeAppearance = appearance
 
             decideInitialScreen()
+            #if DEBUG
+            insertSampleDataIfNeeded()
+            #endif
         }
         // サブスク登録完了を監視して自動でサブスク画面を閉じる
         .onChange(of: storeManager.isPremium) { _, isPremium in
@@ -81,9 +85,32 @@ struct ContentView: View {
         }
     }
 
+    #if DEBUG
+    /// スクリーンショット用ダミーデータ注入（-INSERT_SAMPLE_DATA引数で有効化）
+    private func insertSampleDataIfNeeded() {
+        guard ProcessInfo.processInfo.arguments.contains("-INSERT_SAMPLE_DATA") else { return }
+        let sampleData: [(Int, MoodType, String?)] = [
+            (0, .good, "今日も元気です"),
+            (1, .good, nil),
+            (2, .normal, "少し眠いです"),
+            (3, .good, "散歩しました"),
+            (4, .bad, "腰が痛い"),
+            (5, .normal, nil),
+            (6, .good, "お出かけ中"),
+        ]
+        for (daysAgo, mood, memo) in sampleData {
+            let date = Calendar.current.date(byAdding: .day, value: -daysAgo, to: .now)!
+            let timestamp = Calendar.current.date(bySettingHour: [8, 9, 10, 7, 11, 9, 8][daysAgo], minute: 30, second: 0, of: date)!
+            let record = TapRecord(timestamp: timestamp, mood: mood, memo: memo)
+            modelContext.insert(record)
+        }
+        try? modelContext.save()
+    }
+    #endif
+
     /// 起動時にどの画面を表示するか判定
     private func decideInitialScreen() {
-        // UIテスト時はプレミアム画面をスキップしてホーム直行
+        // UIテスト時は購入画面をスキップしてホーム直行
         if ProcessInfo.processInfo.arguments.contains("-UITEST_SKIP_PREMIUM") {
             return
         }

@@ -13,7 +13,7 @@ struct SettingsView: View {
     @AppStorage("sosVisible") private var sosVisible = true
     /// 使い方ガイド表示フラグ
     @State private var showGuide = false
-    /// プレミアム画面表示フラグ
+    /// 購入画面表示フラグ
     @State private var showPremium = false
     /// LINE連携画面表示フラグ
     @State private var showLineLink = false
@@ -104,7 +104,7 @@ struct SettingsView: View {
                             }
                             Spacer()
                             if !storeManager.isPremium {
-                                Text("有料")
+                                Text("月額500円")
                                     .font(.system(size: 14, weight: .medium))
                                     .foregroundStyle(.white)
                                     .padding(.horizontal, 10)

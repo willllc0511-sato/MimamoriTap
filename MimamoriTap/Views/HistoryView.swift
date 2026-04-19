@@ -75,7 +75,34 @@ struct HistoryView: View {
     }
 }
 
-#Preview {
+#Preview("履歴なし") {
     HistoryView()
         .modelContainer(for: TapRecord.self, inMemory: true)
+}
+
+#Preview("履歴あり") {
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    let container = try! ModelContainer(for: TapRecord.self, configurations: config)
+    let context = container.mainContext
+
+    // 直近7日分のダミーデータ
+    let sampleData: [(Int, MoodType, String?)] = [
+        (0, .good, "今日も元気です"),
+        (1, .good, nil),
+        (2, .normal, "少し眠いです"),
+        (3, .good, "散歩しました"),
+        (4, .bad, "腰が痛い"),
+        (5, .normal, nil),
+        (6, .good, "お出かけ中"),
+    ]
+    for (daysAgo, mood, memo) in sampleData {
+        let date = Calendar.current.date(byAdding: .day, value: -daysAgo, to: .now)!
+        let hour = [8, 9, 10, 7, 11, 9, 8][daysAgo]
+        let timestamp = Calendar.current.date(bySettingHour: hour, minute: 30, second: 0, of: date)!
+        let record = TapRecord(timestamp: timestamp, mood: mood, memo: memo)
+        context.insert(record)
+    }
+
+    return HistoryView()
+        .modelContainer(container)
 }
